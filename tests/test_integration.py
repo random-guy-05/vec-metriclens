@@ -73,3 +73,32 @@ def test_cli_runs_real_scorer_and_writes_gene_lens(tmp_path):
     report = (out / "report.md").read_text()
     assert "Gene-change attribution" in report
     assert "Raw ranking metrics" in report
+
+
+
+def test_cli_rejects_t2_board_setting_mismatch(tmp_path):
+    dummy = tmp_path / "dummy.h5ad"
+    ref = tmp_path / "ref.h5ad"
+    run = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "vec_metriclens.cli",
+            str(dummy),
+            "--task",
+            "T2",
+            "--setting",
+            "embryo",
+            "--target",
+            str(dummy),
+            "--reference",
+            str(ref),
+            "--board",
+            "T2:heart:val_extrap",
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert run.returncode != 0
+    assert "belongs to T2 setting" in (run.stdout + run.stderr)

@@ -1,6 +1,6 @@
 # MetricLens ranking contract
 
-Snapshot date: **2026-10-01**.
+Snapshot date: **2026-10-05**.
 
 MetricLens does not redefine the VEC metrics. `veckit==0.1.2` computes them; MetricLens only labels, attributes, and (when a real published validation board is supplied) converts them through the public skill map.
 

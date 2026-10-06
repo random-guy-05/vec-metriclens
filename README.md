@@ -1,12 +1,12 @@
 # VEC MetricLens
 
-**Turn a local VEC score into a debugging report: which scoring questions cost points, which genes are wrong, and—when spatial—which geometry differs.**
+**Turn a weak local VEC metric into something you can debug: which genes drove the error, and—when spatial—how the predicted geometry differs.**
 
-MetricLens runs the real public `veckit==0.1.2` scorer and adds three layers of interpretation that the raw JSON does not provide:
+MetricLens runs the real public `veckit==0.1.2` scorer and adds diagnostics at a finer level than the raw metric panel:
 
-1. **ranking-metric lens** — raw metric, direction, official weight/question, and optionally exact published validation-board skill/point contribution;
-2. **gene-change attribution** — predicted vs true pseudobulk change against the same reference/WT, ranked by gene-level change error;
-3. **spatial geometry lens** for T2/T3 — translation-invariant RMS radius, covariance eigenvalues and sampled pairwise-distance scale.
+1. **gene-change attribution** — predicted vs true pseudobulk change against the same reference/WT, ranked by gene-level change error;
+2. **spatial geometry lens** for T2/T3 — translation-invariant RMS radius, covariance eigenvalues and sampled pairwise-distance scale;
+3. **metric context** — official question/direction/weight, plus published validation-board point accounting when the supplied target truly is that board.
 
 These diagnostics do not create new competition metrics. They explain discrepancies in the local files you supplied.
 
@@ -52,3 +52,8 @@ The report also gives global change MAE/RMSE, predicted-vs-true change correlati
 For T2/T3, geometry summaries use only the first three `spatial_3D` columns and center each cloud, so arbitrary translations do not contaminate the diagnostics. The lens reports overall scale and anisotropy-like eigenvalue structure; the official scorer remains the authority for the actual spatial metrics.
 
 See `docs/SOURCES.md` for the official metric/anchor snapshot.
+
+
+## Relationship to score-comparison tools
+
+MetricLens is for diagnosing one prediction against a target. It is not a run-to-run score-delta tool: its main outputs are per-gene change errors and spatial geometry summaries that point to where the prediction itself is wrong.

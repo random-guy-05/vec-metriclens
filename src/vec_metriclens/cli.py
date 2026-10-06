@@ -51,6 +51,13 @@ def main(argv: list[str] | None = None) -> int:
         raise SystemExit("--wt is required for T3")
     if args.top_genes < 1:
         raise SystemExit("--top-genes must be >= 1")
+    if args.board and args.task == "T2":
+        parts = args.board.split(":")
+        if len(parts) >= 2 and parts[1] in {"heart", "embryo"} and parts[1] != args.setting:
+            raise SystemExit(
+                f"--board {args.board} belongs to T2 setting {parts[1]!r}, "
+                f"not {args.setting!r}"
+            )
 
     from veckit import score
 

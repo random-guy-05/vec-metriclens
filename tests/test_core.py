@@ -61,3 +61,12 @@ def test_spatial_scale_ratio_detects_doubling():
         2,
         rel=0.1,
     )
+
+
+
+def test_zero_ideal_metric_uses_absolute_anchor_distance():
+    floor = -0.3063
+    ceiling = 0.0053
+    assert metric_skill(floor, floor, ceiling, "zero") == pytest.approx(0.5)
+    assert metric_skill(ceiling, floor, ceiling, "zero") == pytest.approx(1.0)
+    assert metric_skill(-ceiling, floor, ceiling, "zero") == pytest.approx(1.0)
